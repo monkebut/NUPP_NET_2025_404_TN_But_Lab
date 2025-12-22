@@ -22,5 +22,19 @@ namespace CinemaManagement.Common
         {
             OnNotify?.Invoke($"Уведомление для {Name}: {message}");
         }
+
+        // Статический метод для создания случайного клиента
+        public static Customer CreateNew()
+        {
+            var names = new[] { "Алексей", "Мария", "Иван", "Елена", "Дмитрий", "Анна", "Сергей", "Ольга" };
+            var domains = new[] { "gmail.com", "yahoo.com", "outlook.com", "ukr.net" };
+
+            var random = Random.Shared;
+            var name = names[random.Next(names.Length)];
+            var age = random.Next(18, 65);
+            var email = $"{name.ToLower()}{random.Next(100, 999)}@{domains[random.Next(domains.Length)]}";
+
+            return new Customer(name, age, email);
+        }
     }
 }

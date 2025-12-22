@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaManagement.Common", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaManagement.Console", "CinemaManagement.Console\CinemaManagement.Console.csproj", "{64DFD297-4F0E-4AEF-8DC0-3F5A2D589EB9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaManagement.Tests", "CinemaManagement.Tests\CinemaManagement.Tests.csproj", "{34747202-861A-4591-9C5F-6BED04B11A51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,18 @@ Global
 		{64DFD297-4F0E-4AEF-8DC0-3F5A2D589EB9}.Release|x64.Build.0 = Release|Any CPU
 		{64DFD297-4F0E-4AEF-8DC0-3F5A2D589EB9}.Release|x86.ActiveCfg = Release|Any CPU
 		{64DFD297-4F0E-4AEF-8DC0-3F5A2D589EB9}.Release|x86.Build.0 = Release|Any CPU
+		{34747202-861A-4591-9C5F-6BED04B11A51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34747202-861A-4591-9C5F-6BED04B11A51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34747202-861A-4591-9C5F-6BED04B11A51}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{34747202-861A-4591-9C5F-6BED04B11A51}.Debug|x64.Build.0 = Debug|Any CPU
+		{34747202-861A-4591-9C5F-6BED04B11A51}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{34747202-861A-4591-9C5F-6BED04B11A51}.Debug|x86.Build.0 = Debug|Any CPU
+		{34747202-861A-4591-9C5F-6BED04B11A51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34747202-861A-4591-9C5F-6BED04B11A51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34747202-861A-4591-9C5F-6BED04B11A51}.Release|x64.ActiveCfg = Release|Any CPU
+		{34747202-861A-4591-9C5F-6BED04B11A51}.Release|x64.Build.0 = Release|Any CPU
+		{34747202-861A-4591-9C5F-6BED04B11A51}.Release|x86.ActiveCfg = Release|Any CPU
+		{34747202-861A-4591-9C5F-6BED04B11A51}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
