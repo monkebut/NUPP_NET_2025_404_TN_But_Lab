@@ -2,7 +2,7 @@ using System;
 
 namespace CinemaManagement.Common
 {
-    public class Ticket
+    public class Ticket : IHasId
     {
         public Guid Id { get; set; }
         public Customer Customer { get; set; }

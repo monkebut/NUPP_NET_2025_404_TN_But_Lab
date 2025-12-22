@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace CinemaManagement.Common
 {
     // Базовый класс фильма
-    public class Film
+    public class Film : IHasId
     {
         public Guid Id { get; set; }
         public string Title { get; set; }

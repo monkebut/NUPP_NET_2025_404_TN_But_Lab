@@ -3,7 +3,7 @@ using System;
 namespace CinemaManagement.Common
 {
     // Базовый класс человека
-    public class Person
+    public class Person : IHasId
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CinemaManagement.Common\CinemaManagement.Common.csproj" />
+    <ProjectReference Include="..\CinemaManagement.MongoDb\CinemaManagement.MongoDb.csproj" />
   </ItemGroup>
 
 </Project>
