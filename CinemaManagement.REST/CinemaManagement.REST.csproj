@@ -7,12 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.OpenApi" Version="2.3.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CinemaManagement.Common\CinemaManagement.Common.csproj" />
     <ProjectReference Include="..\CinemaManagement.MongoDb\CinemaManagement.MongoDb.csproj" />
+    <ProjectReference Include="..\CinemaManagement.Infrastructure\CinemaManagement.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

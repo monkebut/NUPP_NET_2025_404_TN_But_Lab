@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CinemaManagement.Common;
 using CinemaManagement.REST.Models;
@@ -82,13 +83,15 @@ namespace CinemaManagement.REST.Controllers
         }
 
         /// <summary>
-        /// Create a new movie
+        /// Create a new movie (Requires authentication - Manager or Admin role)
         /// </summary>
         /// <param name="createModel">Movie data</param>
         /// <returns>Created movie</returns>
         [HttpPost]
+        [Authorize(Roles = "Manager,Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<MovieModel>> CreateMovie([FromBody] MovieCreateModel createModel)
         {
             if (!ModelState.IsValid)
@@ -119,15 +122,17 @@ namespace CinemaManagement.REST.Controllers
         }
 
         /// <summary>
-        /// Update an existing movie
+        /// Update an existing movie (Requires authentication - Manager or Admin role)
         /// </summary>
         /// <param name="id">Movie ID</param>
         /// <param name="updateModel">Updated movie data</param>
         /// <returns>No content on success</returns>
         [HttpPut("{id}")]
+        [Authorize(Roles = "Manager,Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> UpdateMovie(Guid id, [FromBody] MovieUpdateModel updateModel)
         {
             if (!ModelState.IsValid)
@@ -165,13 +170,15 @@ namespace CinemaManagement.REST.Controllers
         }
 
         /// <summary>
-        /// Delete a movie
+        /// Delete a movie (Requires authentication - Admin role only)
         /// </summary>
         /// <param name="id">Movie ID</param>
         /// <returns>No content on success</returns>
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteMovie(Guid id)
         {
             try

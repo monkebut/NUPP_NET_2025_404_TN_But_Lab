@@ -29,3 +29,4 @@ namespace CinemaManagement.MVC.Models
     }
 }
 
+
