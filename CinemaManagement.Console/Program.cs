@@ -4,7 +4,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CinemaManagement.Common;
-using CinemaManagement.MongoDb;
+using CinemaManagement.Infrastructure;
+using CinemaManagement.Infrastructure.Models;
+using CinemaManagement.Infrastructure.Mappers;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace CinemaManagement.ConsoleApp
 {
@@ -12,20 +16,34 @@ namespace CinemaManagement.ConsoleApp
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("=== Лабораторная работа №3: База данных MongoDB ===\n");
+            Console.WriteLine("=== Лабораторная работа №3: Entity Framework Core + PostgreSQL ===\n");
 
             try
             {
-                // Initialize MongoDB context
-                Console.WriteLine("Подключение к MongoDB...");
-                var context = new MongoDbContext();
-                
-                // Create repository and CRUD service for Movies
-                var movieRepository = new MongoRepository<Movie>(context.Database);
-                var movieService = new MongoCrudServiceAsync<Movie>(movieRepository);
+                // Get connection string from environment or use default
+                // ЗАМІНІТЬ "postgres" на ваш пароль від PostgreSQL!
+                var connectionString = Environment.GetEnvironmentVariable("POSTGRES_CONNECTION")
+                    ?? "Host=localhost;Port=5432;Database=CinemaManagementDb;Username=postgres;Password=123";
 
-                Console.WriteLine($"Подключено к базе данных: {context.Database.DatabaseNamespace.DatabaseName}");
-                Console.WriteLine();
+                Console.WriteLine("Подключение к PostgreSQL...");
+
+                // Configure DbContext options
+                var optionsBuilder = new DbContextOptionsBuilder<CinemaDbContext>();
+                optionsBuilder.UseNpgsql(connectionString);
+
+                using var context = new CinemaDbContext(optionsBuilder.Options);
+
+                // Ensure database is created
+                await context.Database.EnsureCreatedAsync();
+                Console.WriteLine($"Подключено к базе данных: {connectionString.Split(';').FirstOrDefault(s => s.StartsWith("Database"))}\n");
+
+                // Create repository and CRUD service for Movies
+                var movieRepository = new EfRepository<MovieModel>(context);
+                var movieEfService = new EfCrudServiceAsync<MovieModel>(movieRepository, context);
+                var movieService = new EfCrudServiceWrapper<Movie, MovieModel>(
+                    movieEfService,
+                    ModelMapper.ToModel,
+                    ModelMapper.FromModel);
 
                 // Scenario A: Parallel Bulk Insert with 1000+ objects
                 await ScenarioA_ParallelBulkInsert(movieService);
@@ -41,20 +59,20 @@ namespace CinemaManagement.ConsoleApp
 
                 Console.WriteLine("\n=== Работа программы завершена успешно ===");
             }
-            catch (InvalidOperationException ex) when (ex.Message.Contains("MongoDB"))
+            catch (Exception ex) when (ex.Message.Contains("PostgreSQL") || ex.Message.Contains("Npgsql"))
             {
-                Console.WriteLine("\n❌ ОШИБКА ПОДКЛЮЧЕНИЯ К MONGODB:");
+                Console.WriteLine("\n❌ ОШИБКА ПОДКЛЮЧЕНИЯ К POSTGRESQL:");
                 Console.WriteLine($"   {ex.Message}");
                 Console.WriteLine("\nУбедитесь, что:");
-                Console.WriteLine("  1. MongoDB запущен (mongodb://localhost:27017)");
+                Console.WriteLine("  1. PostgreSQL запущен и доступен");
                 Console.WriteLine("  2. Переменные окружения настроены правильно:");
-                Console.WriteLine("     - MONGO_CONNECTION (по умолчанию: mongodb://localhost:27017)");
-                Console.WriteLine("     - MONGO_DB (по умолчанию: CinemaManagementDb)");
-                Console.WriteLine("\nПрограма завершена.");
+                Console.WriteLine("     - POSTGRES_CONNECTION (по умолчанию: Host=localhost;Port=5432;Database=CinemaManagementDb;Username=postgres;Password=postgres)");
+                Console.WriteLine("\nПрограмма завершена.");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"\n❌ НЕПРЕДВИДЕННАЯ ОШИБКА: {ex.Message}");
+                Console.WriteLine($"   StackTrace: {ex.StackTrace}");
                 Console.WriteLine("Программа завершена.");
             }
         }
@@ -66,7 +84,7 @@ namespace CinemaManagement.ConsoleApp
         {
             Console.WriteLine("=== СЦЕНАРИЙ A: Параллельная массовая вставка ===\n");
 
-            const int movieCount = 100; // Зменшено для швидшого тесту з cloud MongoDB
+            const int movieCount = 100;
             const int maxParallelism = 30;
 
             Console.WriteLine($"Создание и вставка {movieCount} фильмов с ограничением параллелизма {maxParallelism}...");
@@ -106,7 +124,7 @@ namespace CinemaManagement.ConsoleApp
         {
             Console.WriteLine("=== СЦЕНАРИЙ B: LINQ аналитика ===\n");
 
-            Console.WriteLine("Загрузка всех фильмов из MongoDB...");
+            Console.WriteLine("Загрузка всех фильмов из базы данных...");
             var allMovies = await movieService.ReadAllAsync();
             var moviesList = allMovies.ToList();
 

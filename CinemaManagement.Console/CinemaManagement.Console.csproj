@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\CinemaManagement.Common\CinemaManagement.Common.csproj" />
-    <ProjectReference Include="..\CinemaManagement.MongoDb\CinemaManagement.MongoDb.csproj" />
+    <ProjectReference Include="..\CinemaManagement.Infrastructure\CinemaManagement.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
