@@ -416,3 +416,10 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+.fake
+
+# Lab 2 - Generated data files
+data/
+*.json
+test_data.json
